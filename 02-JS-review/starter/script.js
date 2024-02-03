@@ -142,3 +142,128 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
+
+//destructing
+// const book = getBook(2)
+// book
+// // const title = book.title;
+
+// const {title, author, pages, publicationDate, genres, hasMovieAdaptation, reviews} = book
+// title
+// author
+// genres
+// const [primary, ...secondary] = genres
+
+// primary
+
+// secondary
+
+// const newGenres = [...genres, 'Epic']
+
+// newGenres
+
+// const updatedBook = {...book, moviePublicationDate:'2001=12-94', pages: 2343}
+// updatedBook
+
+// const summary = `the title ${title} and the author ${publicationDate.split('-')[0]} is mad, init?`
+
+// summary
+
+// const w = pages < 10000 ? pages : author
+// w
+
+// const ate = (str) => str.split("-")[0]
+
+// console.log(ate('j-kd-kjf'))
+
+// console.log(hasMovieAdaptation && "this book has a movie")
+
+// console.log(book.translations.spanish || 'Not Translated')
+
+// console.log(book.reviews.librarything.reviewsCount)
+
+// const countWrong = book.reviews.librarything.reviewsCount || 'NO DATA'
+
+// countWrong
+// const countWrongg = book.reviews.librarything.reviewsCount ?? 'NO DATA'
+
+// countWrongg
+
+// function getTotalReviewCount(book){
+// const goodread = book.reviews.goodreads.reviewsCount;
+// const librarything = book.reviews.librarything.reviewsCount
+// console.log(goodread + librarything)
+// }
+
+// getTotalReviewCount(book)
+
+// const books = getBooks();
+
+// books;
+
+// const titles = books.map((book) => book.title);
+
+// titles;
+
+// const essentialData = books.map((book) => ({
+//   title: book.title,
+//   author: book.author,
+// }));
+
+// essentialData;
+
+// const longBooks = books.filter((book) => book.pages > 1210).filter((book) => book.hasMovieAdaptation)
+
+// longBooks
+
+// const arr = [1,2,3,4,5,56,6]
+
+// const sumall = books.reduce((acc, cur) => acc += cur.pages, 0)
+
+// sumall
+
+// const arrs= [2,2,45,6,53,735,535,35]
+
+// const sortAlp = ["da","df","da","d","z","q","w","er","r","w"].sort()
+
+// sortAlp
+
+// const sorted = arrs.sort((a, b) => a - b)
+// arrs
+
+// sorted
+
+// const sortedByPages = books.slice().sort((a, b) => a.pages - b.pages)
+// sortedByPages
+
+// const newBook = {
+//   id:6,
+//   title: 'shade goes to shol',
+//   author: "Ben Jamin Ekwa"
+
+// }
+
+// const booksAfteradd = [...books, newBook]
+// booksAfteradd
+
+// const deleteone = books.filter((book) => book.id !== 3 )
+
+// deleteone
+
+const placeholder = await fetch("http://jsonplaceholder.typicode.com/todos/1")
+  .then((response) => response.json())
+  .then((data) => console.log(data));
+
+placeholder;
+
+const nwpla = async function () {
+  try {
+    const pl = await fetch("http://jsonplaceholder.typicode.com/todos/1");
+    const data = await pl.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+nwpla();
