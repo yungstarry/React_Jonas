@@ -14,17 +14,22 @@ const App = () => {
   );
 };
 
-const Pizza = ({ name, photoName, price } = pizzaObj) => {
+const Pizza = ({pizzaObj}) => {
+  const { photoName, name, price, ingredients, soldOut } = pizzaObj;
+
+
+  
+
   return (
-    <div className="pizza">
+    <li className={`pizza ${soldOut ? "sold-out": ""}`}>
       <img src={photoName} alt="" />
       <div>
         <h3>{name}</h3>
-        <h3>{name}</h3>
-        <h3>{price}</h3>
+        <p>{ingredients}</p>
+        <span>{soldOut ? "Sold Out" : price}</span>
         <p></p>
       </div>
-    </div>
+    </li>
   );
 };
 
@@ -41,17 +46,23 @@ function Menu() {
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      {pizzaData.map((pizza, id) => (
-        <Pizza pizzaObj={pizza} />
-      ))}
+      <ul className="pizzas">
+        {pizzaData.map((pizza, id) => (
+          <Pizza key={id} pizzaObj={pizza} />
+        ))}
+      </ul>
     </main>
   );
 }
 function Footer() {
+  const hour = new Date().getHours()
+  const close = 22 
+  const open = 10
+  const isOpen = hour >= open && hour <= close
   return (
     <div className="footer">
       {/* eslint-disable-next-line react/no-unescaped-entities */}
-      <footer>{new Date().toLocaleString()} We're currently Open</footer>
+      <footer>{isOpen ? `${new Date().toLocaleString()} We're currently Open` : "We are closed"}</footer>
     </div>
   );
 }
