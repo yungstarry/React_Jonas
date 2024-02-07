@@ -98,13 +98,22 @@ const Counter = () => {
     <>
       <div className="steps">
         <div style={{ display: "flex" }}>
-          <button onClick={handleStepMinus}>-</button>
-          <h3>Step: {step}</h3>
-          <button onClick={handleStepPlus}>+</button>
+          <input
+            type="range"
+            min="0"
+            max="10"
+            value={step}
+            onChange={(e) => setStep(Number(e.target.value))}
+          />{" "}
+          <p>{step}</p>
         </div>
         <div style={{ display: "flex" }}>
           <button onClick={handleCountMinus}>-</button>
-          <h3>Count: {count}</h3>
+          <input
+            value={count}
+            type="number"
+            onChange={(e) => setCount(Number(e.target.value))}
+          />
           <button onClick={handleCountPlus}>+</button>
         </div>
         <footer>
@@ -116,7 +125,7 @@ const Counter = () => {
               : count < 0
               ? `${Math.abs(count)} day ago is `
               : ""}
-              <span>{date.toDateString()}</span>
+            <span>{date.toDateString()}</span>
           </p>
         </footer>
       </div>
