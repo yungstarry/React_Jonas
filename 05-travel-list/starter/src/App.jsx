@@ -1,8 +1,27 @@
 import React, { useState } from "react";
+import Logo from "./components/Logo";
+import Form from "./components/Form";
+import PackingList from "./components/ParkingList";
+import { Stat } from "./components/Stat";
+import Accordion from "./Accordion";
 
 const initialItems = [
   { id: 1, description: "Passports", quantity: 2, packed: false },
   { id: 2, description: "Socks", quantity: 12, packed: true },
+];
+const faqs = [
+  {
+    title: "Where are these chairs assembled?",
+    text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusantium, quaerat temporibus quas dolore provident nisi ut aliquid ratione beatae sequi aspernatur veniam repellendus.",
+  },
+  {
+    title: "How long do I have to return my chair?",
+    text: "Pariatur recusandae dignissimos fuga voluptas unde optio nesciunt commodi beatae, explicabo natus.",
+  },
+  {
+    title: "Do you ship to countries outside the EU?",
+    text: "Excepturi velit laborum, perspiciatis nemo perferendis reiciendis aliquam possimus dolor sed! Dolore laborum ducimus veritatis facere molestias!",
+  },
 ];
 
 const App = () => {
@@ -23,114 +42,25 @@ const App = () => {
       )
     );
   };
+
+  const handleClearList = () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete all items"
+    );
+    if (confirmed) setItems([]);
+  };
   return (
     <>
-      <Logo />
+      {/* <Logo />
       <Form onAddItems={handleAddItems} />
       <PackingList
         items={items}
         onDeleteItem={handleDeleteItem}
         onUpdateItem={handleToggleItem}
+        onClearList={handleClearList}
       />
-      <Stat items={items} />
-    </>
-  );
-};
-
-const Logo = () => {
-  return (
-    <>
-      <h1>🌴Far Away 💼</h1>
-    </>
-  );
-};
-const Form = ({ onAddItems }) => {
-  const [description, setDescription] = useState("");
-  const [quantity, setQuantity] = useState(1);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!description) return;
-
-    const newItem = { description, quantity, packed: false, id: Date.now() };
-    onAddItems(newItem);
-
-    setDescription("");
-    setQuantity(1);
-  };
-  return (
-    <>
-      <form className="add-form" onSubmit={handleSubmit}>
-        <h3>What do you need for your trip?</h3>
-        <select
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-        >
-          {Array.from({ length: 20 }, (_, i) => i + 1).map((cur, i) => (
-            <option value={cur} key={i}>
-              {cur}
-            </option>
-          ))}
-        </select>
-        <input
-          type="text"
-          placeholder="Items ..."
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <button>ADD</button>
-      </form>
-    </>
-  );
-};
-const PackingList = ({ items, onDeleteItem, onUpdateItem }) => {
-  return (
-    <div className="list">
-      <ul>
-        {items.map((item) => (
-          <Item
-            item={item}
-            key={item.id}
-            onDeleteItem={onDeleteItem}
-            onUpdateItem={onUpdateItem}
-          />
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-const Item = ({ item, onDeleteItem, onUpdateItem }) => {
-  return (
-    <li>
-      <input
-        type="checkbox"
-        value={item.packed}
-        onChange={() => onUpdateItem(item.id)}
-      />
-      <span style={item.packed ? { textDecoration: "line-through" } : {}}>
-        {item.quantity} {item.description}
-      </span>
-      <button onClick={() => onDeleteItem(item.id)}>❌</button>
-    </li>
-  );
-};
-
-const Stat = ({ items }) => {
-  if(!items.length) return <p className="stats"> <em>Start adding some items to your packing list</em></p>
-  const alreadyPacked = items.filter((item) => item.packed).length;
-  const numItems = items.length;
-  const percentage = Math.round((alreadyPacked / numItems) * 100);
-  return (
-    <>
-      <footer className="stats">
-        <em>
-          {percentage === 100
-            ? "You got everything ready!!!  ready to go"
-            : `You have ${numItems} items on your list and you already packed ${alreadyPacked} (${percentage}%)`}
-        </em>
-      </footer>
+      <Stat items={items} /> */}
+      <Accordion faqs={faqs}/>
     </>
   );
 };
