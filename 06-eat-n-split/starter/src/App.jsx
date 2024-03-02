@@ -64,7 +64,7 @@ const App = () => {
         </Button>
       </div>
 
-      {selectedFriend && <FormSplitBill friend={selectedFriend} onSplitBill={handleSplitbill} />}
+      {selectedFriend && <FormSplitBill friend={selectedFriend} onSplitBill={handleSplitbill} key={selectedFriend.id}/>}
     </div>
   );
 };
