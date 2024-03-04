@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useState } from "react";
 
 const tempMovieData = [
@@ -50,20 +51,57 @@ const tempWatchedData = [
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
+const KEY = "ca52333";
+
 export default function App() {
-   const [watched, setWatched] = useState(tempWatchedData);
+  const [watched, setWatched] = useState(tempWatchedData);
   const [movies, setMovies] = useState(tempMovieData);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+   const [query, setQuery] = useState("");
+  // const query = "2024";
+ 
+  useEffect(() => {
+    async function fetchMovies() {
+      setLoading(true);
+      setError('')
+      try {
+        const res = await fetch(
+          `http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=${query}`
+        );
+        if (!res.ok) throw new Error("Something went wrong baba mi");
+
+        const data = await res.json();
+        if (data.Response === "False") throw new Error("Movie  not Found");
+        setMovies(data.Search);
+        setLoading(false);
+      } catch (error) {
+        console.error(error.message);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    if(!query.length){
+      setMovies([])
+      setError('')
+      return
+    }
+    fetchMovies();
+  }, [query]);
 
   return (
     <>
       <NavBar>
         <Logo />
-        <Search />
+        <Search  query={query} setQuery={setQuery}/>
         <NumResults movies={movies} />
       </NavBar>
       <Main>
         <Box>
-          <MovieList movies={movies} />
+          {loading && <Loader />}
+          {!loading && !error && <MovieList movies={movies} />}
+          {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
           <>
@@ -76,6 +114,13 @@ export default function App() {
     </>
   );
 }
+
+const ErrorMessage = ({ message }) => {
+  return <p className="error">{message}</p>;
+};
+const Loader = () => {
+  return <p className="loader">Loading....</p>;
+};
 
 const NavBar = ({ children }) => {
   return (
@@ -94,8 +139,8 @@ const Logo = () => {
   );
 };
 
-const Search = () => {
-  const [query, setQuery] = useState("");
+const Search = ({query, setQuery}) => {
+ 
   return (
     <div>
       <input
@@ -160,7 +205,6 @@ const Main = ({ children }) => {
 // };
 
 const Box = ({ children }) => {
- 
   const [isOpen2, setIsOpen2] = useState(true);
 
   return (
