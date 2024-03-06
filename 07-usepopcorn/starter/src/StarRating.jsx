@@ -75,7 +75,7 @@
 import React, { useState } from "react";
 import PropTypes from 'prop-types'
 
-const StarRating = ({ maxRating = 5, color='#fcc419', size= 48, message=[] }) => {
+const StarRating = ({ maxRating = 5, color='#fcc419', size= 48, message=[], onSetRating}) => {
 
   const [rating, setRating] = useState(0);
   const [tempRating, setTempRating] = useState(0);
@@ -98,6 +98,7 @@ const StarRating = ({ maxRating = 5, color='#fcc419', size= 48, message=[] }) =>
   };
   const handleRating = (rating) => {
     setRating(rating)
+    onSetRating(rating)
   };
   return (
     <div style={containerStyle}>
