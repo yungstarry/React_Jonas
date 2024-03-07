@@ -3,13 +3,15 @@ import React from "react";
 import { pizzaData } from "./data";
 
 import "./index.css";
+import Currency from "./Currency.jsx";
 
 const App = () => {
   return (
     <div className="container">
-      <Header />
+      {/* <Header />
       <Menu />
-      <Footer />
+      <Footer /> */}
+      <Currency />
     </div>
   );
 };

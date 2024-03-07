@@ -43,9 +43,17 @@ const App = () => {
     setIsOpen(false);
   };
 
-const handlepaybill = (value) => {
-  console.log(value);
-}
+  const handlepaybill = (value) => {
+    console.log(value);
+    setFriends(
+      friends.map((friend) =>
+        friend.id === selectedFriend.id
+          ? { ...friend, balance: friend.balance + value }
+          : friend
+      )
+    );
+    setSelectedFriend(null)
+  };
 
   return (
     <div className="app">
@@ -66,6 +74,7 @@ const handlepaybill = (value) => {
           selectedFriend={selectedFriend}
           onSelection={handleSelection}
           onHandlePayBill={handlepaybill}
+          key={selectedFriend.id}
         />
       )}
     </div>
@@ -171,7 +180,7 @@ const FormSplitBill = ({ selectedFriend, onHandlePayBill }) => {
   const handlesumbit = (e) => {
     e.preventDefault();
     if (!bill || !paidByUser) return;
-    onHandlePayBill(whoIsPaying === "user" ? paidByFriend : -paidByUser)
+    onHandlePayBill(whoIsPaying === "user" ? paidByFriend : -paidByUser);
   };
   return (
     <form className="form-split-bill" onSubmit={handlesumbit}>

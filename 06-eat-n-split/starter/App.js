@@ -183,7 +183,7 @@ const FormSplitBill = ({ friend, onSplitBill }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!bill || !paidByFriend) return;
-    onSplitBill(whoIsPaying === "user" ? paidByFriend : -paidByFriend);
+    onSplitBill( whoIsPaying === 'user' ? paidByFriend : Math.abs(-paidByUser));
   };
 
   return (
