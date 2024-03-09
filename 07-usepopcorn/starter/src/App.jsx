@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { useMovies } from "./useMovies";
 import { useLocalStorageState } from "./useLocalstorage";
 import { useKey } from "./useKey";
+import Geolocation from "./Geolocation";
 
 const KEY = "ca52333"; 
 const average = (arr) =>
@@ -53,7 +54,8 @@ export default function App() {
 
   return (
     <>
-      <NavBar>
+    <Geolocation />
+      {/* <NavBar>
         <Logo />
         <Search query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
@@ -87,7 +89,7 @@ export default function App() {
             </>
           )}
         </Box>
-      </Main>
+      </Main> */}
     </>
   );
 }
