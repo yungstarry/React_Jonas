@@ -19,7 +19,7 @@ const Geolocation = () => {
   return (
     <div>
       <button onClick={handleclick} value={count} style={{ padding: "5px" }}>
-        Get my position
+        Get my positions
       </button>
       {isLoading && <p>loading</p>}
       {error && <p>{error}</p>}

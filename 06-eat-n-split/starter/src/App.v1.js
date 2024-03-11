@@ -24,24 +24,13 @@ const initialFriends = [
 
 const App = () => {
   const [friends, setFriends] = useState(initialFriends);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleAddButton = () => {
-    setIsOpen((isOpen) => !isOpen);
-  };
-
-  const handleAddFriend = (value) => {
-setFriends((friends) => [...friends, value])
-  }
   return (
     <div className="app">
       <div className="sidebar">
         <FriendsList friends={friends} />
-        {isOpen && <FormAddFriend  onAddFriend={handleAddFriend}/>}
+        <FormAddFriend />
 
-        <Button onClick={handleAddButton} >
-          {isOpen ? "Close" : "Add Friend"}
-        </Button>
+        <Button>Close</Button>
       </div>
 
       <FormSplitBill />
@@ -85,47 +74,23 @@ const Friend = ({ friend }) => {
   );
 };
 
-const FormAddFriend = ({ onAddFriend }) => {
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("https://i.pravatar.cc/48");
-  const id = crypto.randomUUID();
-
-  const handleAddFriend = (e) => {
-    e.preventDefault();
-    const newFriend = { id, name, image: `${image}?u=${id}`, balance: 0 };
-    onAddFriend(newFriend)
-  };
+const FormAddFriend = () => {
   return (
     <form className="form-add-friend">
       <label>Friend name</label>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+      <input type="text" />
       <label>Image Url</label>
-      <input
-        type="text"
-        value={image}
-        onChange={(e) => setImage(e.target.value)}
-      />
-      <Button onClick={handleAddFriend}>Add</Button>
+      <input type="text" value="https://i.pravatar.cc/48" />
+      <Button>Add</Button>
     </form>
   );
 };
 
-const Button = ({ children, onClick }) => {
-  return (
-    <button className="button" onClick={onClick}>
-      {children}
-    </button>
-  );
+const Button = ({ children }) => {
+  return <button className="button">{children}</button>;
 };
 
 const FormSplitBill = () => {
-  const [bill, setBill] = useState('')
-  const [paidByUser, setPaidByUser] = useState('')
-  const [paidByFriend, setpaidByFriend] = useState('')
   return (
     <form className="form-split-bill">
       <h2>SPLIT A BILL WITH X</h2>
