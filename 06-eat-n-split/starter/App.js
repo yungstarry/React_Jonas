@@ -29,6 +29,7 @@ const App = () => {
 
   const handleShowAddFriend = () => {
     setIsOpen((open) => !open);
+    setSelectedFriend(null);
   };
 
   const handleAddFriend = (friend) => {
@@ -40,7 +41,6 @@ const App = () => {
     setSelectedFriend((selected) =>
       selected?.id === friend.id ? null : friend
     );
-    setIsOpen(false);
   };
 
   const handleSplitbill = (value) => {
@@ -179,6 +179,8 @@ const FormSplitBill = ({ friend, onSplitBill }) => {
   const [paidByUser, setPaidByUser] = useState("");
   const paidByFriend = bill ? bill - paidByUser : "";
   const [whoIsPaying, setWhoIsPaying] = useState("user");
+
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
