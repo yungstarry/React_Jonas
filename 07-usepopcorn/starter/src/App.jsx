@@ -55,9 +55,23 @@ export default function App() {
   const [watched, setWatched] = useState(tempWatchedData);
   const [movies, setMovies] = useState(tempMovieData);
 
+  const Test = () => {
+    const [movieRating, setMovieRating] = useState(0)
+
+    return (
+      <div>
+        <StarRating onRate={setMovieRating} color="#283"/>
+        <p>this movie is rated {movieRating}</p>
+      </div>
+    )
+  }
   return (
     <>
-    <StarRating maxRating={10}  />
+
+<Test />
+
+    <StarRating maxRating={10} color="#fce" size={30} message={['Terrible', 'Bad', 'Okay', 'Okay', 'Good']} base={7}/>
+    <StarRating />
       {/* <NavBar>
         <Logo />
         <Search />
