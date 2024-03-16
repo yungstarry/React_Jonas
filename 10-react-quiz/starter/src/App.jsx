@@ -13,114 +13,117 @@ import { Progress } from "./components/Progress";
 import FinishedScreen from "./components/FinishedScreen";
 import { Timer } from "./components/Timer";
 import Footer from "./components/Footer";
+import BankReducer from "./components/BankReducer";
 
-const initialState = {
-  questions: [],
+// const SECS_PER_QUESTION = 30
 
-  //loading, ready, error, active, finished
-  status: "loading",
-  index: 14,
-  answer: null,
-  points: 0,
-  highscore: 0,
-  secondsRemaining: 10,
-};
+// const initialState = {
+//   questions: [],
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "getData":
-      return { ...state, questions: action.payload, status: "ready" };
-      break;
-    case "dataFailed":
-      return { ...state, status: "error" };
-      break;
-    case "start":
-      return { ...state, status: "active" };
-      break;
-    case "newAnswer":
-      const question = state.questions.at(state.index);
-      return {
-        ...state,
-        answer: action.payload,
-        points:
-          action.payload === question.correctOption
-            ? state.points + question.points
-            : state.points,
-      };
-      break;
-    case "nextQuestion":
-      return {
-        ...state,
-        index: state.index + 1,
-        answer: null,
-      };
-    case "finishedQuiz":
-      return {
-        ...state,
-        status: "finished",
-        highscore:
-          state.points > state.highscore ? state.points : state.highscore,
-      };
-    case "restart":
-      return { ...initialState, questions: state.questions, status: "ready" };
-      break;
-    case "tick":
-      return {
-        ...state,
-        secondsRemaining: state.secondsRemaining - 1,
-        status: state.secondsRemaining === 0 ? "finished" : state.status,
-      };
-      break;
-    default:
-      break;
-  }
-}
+//   //loading, ready, error, active, finished
+//   status: "loading",
+//   index: 0,
+//   answer: null,
+//   points: 0,
+//   highscore: 0,
+//   secondsRemaining: null,
+// };
+
+// function reducer(state, action) {
+//   switch (action.type) {
+//     case "getData":
+//       return { ...state, questions: action.payload, status: "ready" };
+//       break;
+//     case "dataFailed":
+//       return { ...state, status: "error" };
+//       break;
+//     case "start":
+//       return { ...state, status: "active", secondsRemaining: state.questions.length * SECS_PER_QUESTION };
+//       break;
+//     case "newAnswer":
+//       const question = state.questions.at(state.index);
+//       return {
+//         ...state,
+//         answer: action.payload,
+//         points:
+//           action.payload === question.correctOption
+//             ? state.points + question.points
+//             : state.points,
+//       };
+//       break;
+//     case "nextQuestion":
+//       return {
+//         ...state,
+//         index: state.index + 1,
+//         answer: null,
+//       };
+//     case "finishedQuiz":
+//       return {
+//         ...state,
+//         status: "finished",
+//         highscore:
+//           state.points > state.highscore ? state.points : state.highscore,
+//       };
+//     case "restart":
+//       return { ...initialState, questions: state.questions, status: "ready" };
+//       break;
+//     case "tick":
+//       return {
+//         ...state,
+//         secondsRemaining: state.secondsRemaining - 1,
+//         status: state.secondsRemaining === 0 ? "finished" : state.status,
+//       };
+//       break;
+//     default:
+//       break;
+//   }
+// }
 
 const App = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const {
-    questions,
-    status,
-    index,
-    answer,
-    points,
-    highscore,
-    secondsRemaining,
-  } = state;
+//   const [state, dispatch] = useReducer(reducer, initialState);
+//   const {
+//     questions,
+//     status,
+//     index,
+//     answer,
+//     points,
+//     highscore,
+//     secondsRemaining,
+//   } = state;
 
-  const TotalPoints = questions
-    ?.map((questions) => questions.points)
-    .reduce((acc, value) => acc + value, 0);
+//   const TotalPoints = questions
+//     ?.map((questions) => questions.points)
+//     .reduce((acc, value) => acc + value, 0);
 
-  const numQuesion = questions.length;
+//   const numQuesion = questions.length;
 
-  useEffect(() => {
-    async function getData() {
-      try {
-        const res = await fetch("http://localhost:8000/questions");
-        const data = await res.json();
-        console.log(data);
+//   useEffect(() => {
+//     async function getData() {
+//       try {
+//         const res = await fetch("http://localhost:8000/questions");
+//         const data = await res.json();
+//         console.log(data);
 
-        dispatch({ type: "getData", payload: data });
-        if (!res.ok) throw new Error("Something went wrong");
-      } catch (err) {
-        dispatch({ type: "dataFailed" });
-      }
-    }
-    getData();
-  }, []);
+//         dispatch({ type: "getData", payload: data });
+//         if (!res.ok) throw new Error("Something went wrong");
+//       } catch (err) {
+//         dispatch({ type: "dataFailed" });
+//       }
+//     }
+//     getData();
+//   }, []);
 
   return (
     <div className="app">
-      <Header />
+      {/* <Header />
       <Main>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
-        {/* {status === "ready" && (
-          <StartScreen numQuesion={numQuesion} dispatch={dispatch} />
-        )} */}
-
         {status === "ready" && (
+          <StartScreen numQuesion={numQuesion} dispatch={dispatch} />
+        )}
+
+        {status === "active" && (
           <>
             <Progress
               index={index}
@@ -154,7 +157,9 @@ const App = () => {
             dispatch={dispatch}
           />
         )}
-      </Main>
+      </Main> */}
+
+      <BankReducer />
     </div>
   );
 };
