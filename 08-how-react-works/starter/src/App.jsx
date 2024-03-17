@@ -18,7 +18,6 @@ const content = [
   },
 ];
 
-console.log(content[2]);
 export default function App() {
   return (
     <div>
@@ -27,22 +26,19 @@ export default function App() {
   );
 }
 
-function Tabbed({ content }) {
-
+function Tabbed() {
   const [activeTab, setActiveTab] = useState(0);
-
 
   return (
     <div>
       <div className="tabs">
-        <Tab num={0} activeTab={activeTab} onClick={setActiveTab} />
-        <Tab num={1} activeTab={activeTab} onClick={setActiveTab} />
-        <Tab num={2} activeTab={activeTab} onClick={setActiveTab} />
-        <Tab num={3} activeTab={activeTab} onClick={setActiveTab} />
+        <Tab num={0} activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Tab num={1} activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Tab num={2} activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Tab num={3} activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
-
       {activeTab <= 2 ? (
-        <TabContent item={content.at(activeTab)} key={content.at(activeTab).summary} />
+        <TabContent item={content.at(activeTab)} key={activeTab}/>
       ) : (
         <DifferentContent />
       )}
@@ -50,11 +46,11 @@ function Tabbed({ content }) {
   );
 }
 
-function Tab({ num, activeTab, onClick }) {
+function Tab({ num, activeTab, setActiveTab }) {
   return (
     <button
-      className={activeTab === num ? "tab active" : "tab"}
-      onClick={() => onClick(num)}
+      className={activeTab === num ? "active tab" : "tab"}
+      onClick={() => setActiveTab(num)}
     >
       Tab {num + 1}
     </button>
@@ -62,33 +58,29 @@ function Tab({ num, activeTab, onClick }) {
 }
 
 function TabContent({ item }) {
-  const [showDetails, setShowDetails] = useState(true);
-  const [likes, setLikes] = useState(0);
-
+  const [isExpanded, setIsExpanded] = useState(true)
+  const [love, setLove] = useState(0)
   function handleInc() {
-    setLikes(likes + 1);
+    setLove((love) => love +1)
   }
   function tripleleInc() {
-    setLikes((likes) => likes + 1);
-    setLikes((likes) => likes + 1);
+        setLove((love) => love + 3);
   }
-  function handleUndo(){
-    setShowDetails(true)
-    setLikes(0)
+  function handleUndo() {
+  setIsExpanded(false)
+  setLove(0)
   }
 
   return (
     <div className="tab-content">
       <h4>{item.summary}</h4>
-      {showDetails && <p>{item.details}</p>}
+      {isExpanded && <p>{item.details}</p>}
 
       <div className="tab-actions">
-        <button onClick={() => setShowDetails((h) => !h)}>
-          {showDetails ? "Hide" : "Show"} details
-        </button>
+        <button onClick={() => setIsExpanded((ah) => !ah)}>{isExpanded? "Hide": "Show"} details</button>
 
         <div className="hearts-counter">
-          <span>{likes} ❤️</span>
+          <span>{love}💝</span>
           <button onClick={handleInc}>+</button>
           <button onClick={tripleleInc}>+++</button>
         </div>
@@ -109,4 +101,3 @@ function DifferentContent() {
     </div>
   );
 }
-
