@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import PageNav from "../components/PageNav.jsx";
 import styles from "./Login.module.css";
 import { useState } from "react";
@@ -32,7 +32,7 @@ export default function Login() {
         </div>
 
         <div>
-          <Link className="cta">Login</Link>
+          <NavLink to="/login" className="cta">Login</NavLink>
         </div>
       </form>
     </main>
