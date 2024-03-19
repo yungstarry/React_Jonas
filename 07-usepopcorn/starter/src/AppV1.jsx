@@ -48,36 +48,27 @@ const tempWatchedData = [
     userRating: 9,
   },
 ];
+const KEY = "ca52333";
+// const BASE_URL=`http://www.omdbapi.com/?apikey=${KEY}&i=${"id"}`;
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
-
-  const KEY= "ca52333";
-  // const BASE_URL=`http://www.omdbapi.com/?apikey=${KEY}&i=${"id"}`;
 
 export default function App() {
   const [watched, setWatched] = useState(tempWatchedData);
   const [movies, setMovies] = useState(tempMovieData);
 
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${"interstellar"}`
-        );
+  const Test = () => {
+    const [movieRating, setMovieRating] = useState(0);
 
-        const data = await res.json();
-        if(!res.ok) throw new Error("Response not ok")
-        console.log(data);
-      setMovies(data.Search)
-      } catch (err) {
-        console.log(err.message);
-      }
-    }
-    fetchData();
-  }, []);
-
+    return (
+      <div>
+        <StarRating onRate={setMovieRating} color="#283" />
+        <p>this movie is rated {movieRating}</p>
+      </div>
+    );
+  };
   return (
     <>
       <NavBar>
@@ -141,8 +132,6 @@ const NumResults = ({ movies }) => {
 const Main = ({ children }) => {
   return <main className="main">{children}</main>;
 };
-
-
 
 const Box = ({ children }) => {
   const [isOpen2, setIsOpen2] = useState(true);
