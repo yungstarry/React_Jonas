@@ -18,7 +18,7 @@ const CitiesProvider = ({ children }) => {
         const res = await fetch(`${BASE_URL}/cities`);
         const data = await res.json();
         if (!res.ok) throw new Error("Something Went Wrong");
-        console.log(data);
+
         setCities(data);
       } catch (err) {
         console.log(err.message);
@@ -35,7 +35,7 @@ const CitiesProvider = ({ children }) => {
       const res = await fetch(`${BASE_URL}/cities/${id}`);
       const data = await res.json();
       if (!res.ok) throw new Error("Something Went Wrong");
-      
+
       setCurrentCity(data);
     } catch (err) {
       console.log(err.message);
@@ -46,7 +46,7 @@ const CitiesProvider = ({ children }) => {
 
   return (
     <CitiesContext.Provider value={{ cities, isLoading, currentCity, getCity }}>
-      {children}
+      <div>{children}</div>
     </CitiesContext.Provider>
   );
 };

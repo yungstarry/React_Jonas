@@ -73,33 +73,20 @@ const Map = () => {
   );
 };
 
-const ChangeCenter = ({ position }) => {
+function ChangeCenter({ position }) {
   const map = useMap();
   map.setView(position);
   return null;
 };
 
 function DetectClick() {
-  const [clickedLocation, setClickedLocation] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (clickedLocation) {
-      const { lat, lng } = clickedLocation;
-      navigate(`form?lat=${lat}&lng=${lng}`);
-      // Reset clickedLocation to null after navigation
-      setClickedLocation(null);
-    }
-  }, [clickedLocation, navigate]);
-
   useMapEvents({
-    click(e) {
-      const { lat, lng } = e.latlng;
-      setClickedLocation({ lat, lng });
-    },
+    click: (e) => navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`),
   });
-
-  return null;
 }
+
+
 
 export default Map;

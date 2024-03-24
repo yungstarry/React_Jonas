@@ -20,6 +20,7 @@ export function useGeolocation(defaultPosition = null) {
           
         });
         setIsLoading(false);
+        console.log(position)
         
       },
       (error) => {
