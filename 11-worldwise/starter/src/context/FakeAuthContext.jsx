@@ -4,13 +4,16 @@ import { createContext } from "react";
 
 const AuthContext = createContext();
 
-const initialState = { user: null, isAuthenticated: false };
+const initialState = { user: null, isAuthenticated: false, error: "" };
 const reducer = (state, action) => {
   switch (action.type) {
     case "login":
       return { ...state, user: action.payload, isAuthenticated: true };
     case "logout":
       return initialState;
+      case "error":
+        return{...state, error: action.payload}
+
 
     default:
       throw new Error("Unknown action");
@@ -36,8 +39,12 @@ function AuthProvider({ children }) {
   function logout() {
     dispatch({ type: "logout" });
   }
+
+  function error(){
+    dispatch({type: "error", payload: "Invalid credentials"})
+  }
   return (
-    <AuthContext.Provider value={(user, isAuthenticated, login, logout)}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, error }}>
       {children}
     </AuthContext.Provider>
   );
@@ -50,4 +57,4 @@ function useAuth() {
   return context;
 }
 
-export {AuthProvider, useAuth}
+export { AuthProvider, useAuth };

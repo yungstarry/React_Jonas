@@ -1,18 +1,34 @@
-import { Link, NavLink } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import PageNav from "../components/PageNav.jsx";
 import styles from "./Login.module.css";
 import { useState } from "react";
 import { useAuth } from "../context/FakeAuthContext.jsx";
+import Button from "../components/Button.jsx";
 
 export default function Login() {
   const [email, setEmail] = useState("jack@example.com");
   const [password, setPassword] = useState("qwerty");
-  const{user, isAuthenticated, login, logout} = useAuth()
+  const { user, isAuthenticated, login, logout , error} = useAuth();
+  const navigate = useNavigate();
 
   const handleSumbit = (e) => {
     e.preventDefault();
-    console.log(email, password);
+    if (email && password) {
+      login(email, password);
+    }
+    if (!email && !password) {
+      error()
+      
+    }
+
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/app");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <main className={styles.login}>
@@ -39,9 +55,7 @@ export default function Login() {
         </div>
 
         <div>
-          <NavLink to="/login" className="cta">
-            Login
-          </NavLink>
+          <Button type={"primary"}>Login</Button>
         </div>
       </form>
     </main>
