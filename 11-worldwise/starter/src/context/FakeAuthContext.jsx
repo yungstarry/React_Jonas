@@ -9,15 +9,13 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "login":
       return { ...state, user: action.payload, isAuthenticated: true };
+    case "error/throw":
+      console.log("Error thrown:", action.payload); // Debugging log
+      return { ...state, error: action.payload };
     case "logout":
       return initialState;
-      case "error":
-        return{...state, error: action.payload}
-
-
     default:
       throw new Error("Unknown action");
-      break;
   }
 };
 
@@ -30,7 +28,7 @@ const FAKE_USER = {
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { user, isAuthenticated } = state;
+  const { user, isAuthenticated, error } = state;
 
   function login(email, password) {
     if (email === FAKE_USER.email && password === FAKE_USER.password)
@@ -40,11 +38,18 @@ function AuthProvider({ children }) {
     dispatch({ type: "logout" });
   }
 
-  function error(){
-    dispatch({type: "error", payload: "Invalid credentials"})
+  function throwError(email, password) {
+    const errorMessage =
+      email && password
+        ? "Invalid email or password."
+        : "Please enter your email and password.";
+
+    dispatch({ type: "error/throw", payload: errorMessage });
   }
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, error }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated, error, login, logout, throwError }}
+    >
       {children}
     </AuthContext.Provider>
   );

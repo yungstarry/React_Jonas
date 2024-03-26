@@ -9,26 +9,33 @@ import Button from "../components/Button.jsx";
 export default function Login() {
   const [email, setEmail] = useState("jack@example.com");
   const [password, setPassword] = useState("qwerty");
-  const { user, isAuthenticated, login, logout , error} = useAuth();
+  const { user, isAuthenticated, login, logout, throwError, error } = useAuth();
   const navigate = useNavigate();
 
-  const handleSumbit = (e) => {
-    e.preventDefault();
-    if (email && password) {
-      login(email, password);
-    }
-    if (!email && !password) {
-      error()
-      
-    }
+//  const handleSumbit = (e) => {
+//    e.preventDefault();
+//    if (email && password) {
+//      login(email, password);
+//     } else {
+//       throwError(email, password);
+//       console.log(email, password);
+//    }
+//  };
+function handleSumbit(e) {
+  e.preventDefault();
+  if (!email || !password) {
+    throwError(email, password)
+  } else {
+    login(email, password);
+  }
+}
 
-  };
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/app");
+      navigate("/app", { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, error]);
 
   return (
     <main className={styles.login}>
