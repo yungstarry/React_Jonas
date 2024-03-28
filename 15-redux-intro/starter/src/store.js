@@ -1,4 +1,7 @@
-import { combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import acountReducer  from "./features/accounts/AccountSlice";
+import  customerReducer  from "./features/customers/CustomerSlice";
+import { thunk } from "redux-thunk";
 
 
 
@@ -8,67 +11,8 @@ const rootReducer = combineReducers({
   customer: customerReducer,
 });
 
-const store= createStore(rootReducer)
+const store= createStore(rootReducer, applyMiddleware(thunk))
 
-// store.dispatch({ type: "account/deposit", payload: 500 });
-// store.dispatch({ type: "account/withdraw", payload: 200 });
-// console.log(store.getState());
 
-// store.dispatch({
-//   type: "account/requestLoan",
-//   payload: {
-//     amount: 1000,
-//     purpose: "Buy a cat",
-//   },
-// });
+export default store
 
-// console.log(store.getState());
-// store.dispatch({ type: "account/payLoan" });
-// console.log(store.getState());
-
-function deposit(amount) {
-  return { type: "account/deposit", payload: amount };
-}
-function withdraw(amount) {
-  return { type: "account/withdraw", payload: amount };
-}
-function requestLoan(amount) {
-  return {
-    type: "account/requestLoan",
-    payload: {
-      amount: amount,
-      purpose: "Buy a cat",
-    },
-  };
-}
-function payLoan() {
-  return { type: "account/payLoan" };
-}
-
-store.dispatch(deposit(500));
-store.dispatch(withdraw(200));
-console.log(store.getState());
-store.dispatch(requestLoan(1000));
-console.log(store.getState());
-store.dispatch(payLoan());
-console.log(store.getState());
-
-function createCustomer(fullName, nationalID) {
-  return {
-    type: "customer/createCustomer",
-    payload: {
-      fullName,
-      nationalID,
-      createdAt: new Date().toISOString(),
-    },
-  };
-}
-
-function updateName(fullName) {
-  return { type: "customer/updateName", payload: fullName };
-}
-
-store.dispatch(createCustomer("azeez israel", 8989));
-console.log(store.getState());
-store.dispatch(updateName("azeez israel Abiola"));
-console.log(store.getState());
