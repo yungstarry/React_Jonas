@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 const fakeCart = [
   {
@@ -36,6 +36,7 @@ function Cart() {
       <div>
         <Link to="/order/new">Order pizzas</Link>
         <button>Clear cart</button>
+       
       </div>
     </div>
   );
