@@ -7,7 +7,8 @@ const DeleteItem = ({ children, pizzaId }) => {
   const dispatch = useDispatch();
 
   function handleDeleteItem() {
-    console.log(dispatch(deleteItem(pizzaId)));
+
+    dispatch(deleteItem(pizzaId));
   }
   return (
     <Button type={"small"} onClick={handleDeleteItem}>

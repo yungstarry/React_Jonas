@@ -14,7 +14,7 @@ function CartOverview() {
           <span>{TotalCartQuantity} pizzas</span>
           <span>${TotalCartPrice}</span>
         
-        )
+        
       </p>
       <LinkButton to="/cart">Open cart &rarr;</LinkButton>
     </div>

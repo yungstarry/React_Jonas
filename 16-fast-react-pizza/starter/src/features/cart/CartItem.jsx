@@ -7,6 +7,7 @@ import UpdateItemQuantity from "./UpdateItemQuantity";
 
 function CartItem({ item }) {
   const { pizzaId, name, quantity, totalPrice } = item;
+    const currentQuantity = useSelector(getCurrentQuantityById(pizzaId));
 
 
 
@@ -19,7 +20,7 @@ function CartItem({ item }) {
       <div className="flex items-center justify-between sm:gap-6 ">
         <p className=" text-sm font-bold">{formatCurrency(totalPrice)}</p>
         {/* <Button type={'small'} onClick={handleDeleteItem}>Delete</Button> */}
-        <UpdateItemQuantity pizzaId={pizzaId} />
+        <UpdateItemQuantity pizzaId={pizzaId} currentQuantity={currentQuantity}/>
         <DeleteItem pizzaId={pizzaId}>Delete</DeleteItem>
       </div>
     </li>
