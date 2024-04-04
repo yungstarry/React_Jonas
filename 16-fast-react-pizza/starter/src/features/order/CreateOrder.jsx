@@ -45,7 +45,7 @@ function CreateOrder() {
   const isSubmitting = navigation.state === "submitting";
   // const cart = fakeCart;
   const formErrors = useActionData();
-  console.log(formErrors)
+ 
 
   const style = "mb-5 flex gap-2 flex-col sm:flex-row sm:items-center ";
   const {
@@ -56,14 +56,13 @@ function CreateOrder() {
     error: errorAddress,
   } = useSelector((state) => state.user);
 
-const isLoadingAddress = addressStatus === 'loading'
+  const isLoadingAddress = addressStatus === "loading";
   const { cart } = useSelector((state) => state.cart);
   const TotalCartPrice = useSelector(getTotalCartPrice);
   const priorityPrice = withPriority ? (TotalCartPrice * 20) / 100 : 0;
   const totalPrice = TotalCartPrice + priorityPrice;
   const dispatch = useDispatch();
 
-  console.log(cart);
 
   if (!cart.length) return <EmptyCart />;
 
@@ -144,6 +143,16 @@ const isLoadingAddress = addressStatus === 'loading'
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
+          <input
+            type="hidden"
+            name="position"
+            id="position"
+            value={
+              position.longitude && position.latitude
+                ? `${position.latitude}, ${position.longitude}`
+                : ""
+            }
+          />
 
           <Button type="primary" disabled={isSubmitting || isLoadingAddress}>
             {isSubmitting
@@ -159,13 +168,14 @@ export async function action({ request }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
 
-  console.log(data);
+
 
   const order = {
     ...data,
     cart: JSON.parse(data.cart),
     priority: data.priority === "true",
   };
+
 
   console.log(order);
   const errors = {};
@@ -178,6 +188,7 @@ export async function action({ request }) {
   //do not over use store directly inside componenent
   store.dispatch(clearCart());
   return redirect(`/order/${newOrder.id}`);
+  // return null
 }
 
 export default CreateOrder;
