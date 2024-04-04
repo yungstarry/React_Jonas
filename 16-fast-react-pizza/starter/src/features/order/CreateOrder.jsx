@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
 import Button from "../../ui/Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EmptyCart from "../cart/EmptyCart";
 import store from "../../store";
 import { clearCart, getTotalCartPrice } from "../cart/cartSlice";
 import { formatCurrency } from "../../utils/helpers";
+import { fetchAddress } from "../user/userSlice";
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -44,17 +45,27 @@ function CreateOrder() {
   const isSubmitting = navigation.state === "submitting";
   // const cart = fakeCart;
   const formErrors = useActionData();
+  console.log(formErrors)
 
   const style = "mb-5 flex gap-2 flex-col sm:flex-row sm:items-center ";
-   const { username } = useSelector((state) => state.user);
-   const { cart } = useSelector((state) => state.cart);
-   const TotalCartPrice = useSelector(getTotalCartPrice)
-   const priorityPrice = withPriority? TotalCartPrice * 20 /100: 0
-   const totalPrice = TotalCartPrice + priorityPrice
-   
-console.log(cart)
+  const {
+    username,
+    status: addressStatus,
+    position,
+    address,
+    error: errorAddress,
+  } = useSelector((state) => state.user);
 
-if(!cart.length) return <EmptyCart />
+const isLoadingAddress = addressStatus === 'loading'
+  const { cart } = useSelector((state) => state.cart);
+  const TotalCartPrice = useSelector(getTotalCartPrice);
+  const priorityPrice = withPriority ? (TotalCartPrice * 20) / 100 : 0;
+  const totalPrice = TotalCartPrice + priorityPrice;
+  const dispatch = useDispatch();
+
+  console.log(cart);
+
+  if (!cart.length) return <EmptyCart />;
 
   return (
     <div className="px-4 py-6">
@@ -76,19 +87,44 @@ if(!cart.length) return <EmptyCart />
           <label className=" sm:basis-40">Phone number</label>
           <div className="grow">
             <input type="tel" name="phone" required className="input w-full" />
-            {formErrors?.phone && <p className=" text-xs mt-2 text-red-700 bg-red-100 rounded-md p-2 ">{formErrors.phone}</p>}
+            {formErrors?.phone && (
+              <p className=" mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700 ">
+                {formErrors.phone}
+              </p>
+            )}
           </div>
         </div>
 
-        <div className={style}>
+        <div className={`${style} relative`}>
           <label className=" sm:basis-40">Address</label>
           <div className="grow ">
             <input
               type="text"
               name="address"
               required
+              disabled={isLoadingAddress}
+              defaultValue={address}
               className="input w-full"
             />
+            {addressStatus === "error" && (
+              <p className=" mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700 ">
+                {errorAddress}
+              </p>
+            )}
+          </div>
+          <div className="absolute right-[3px] z-10">
+            {!position.latitude && !position.longitude && (
+              <Button
+                type={"small"}
+                disabled={isLoadingAddress}
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(fetchAddress());
+                }}
+              >
+                Get Position
+              </Button>
+            )}
           </div>
         </div>
 
@@ -101,14 +137,18 @@ if(!cart.length) return <EmptyCart />
             value={withPriority}
             onChange={(e) => setWithPriority(e.target.checked)}
           />
-          <label htmlFor="priority" className=" font-medium">Want to yo give your order priority?</label>
+          <label htmlFor="priority" className=" font-medium">
+            Want to yo give your order priority?
+          </label>
         </div>
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
 
-          <Button type="primary" disabled={isSubmitting}>
-            {isSubmitting ? "Placing Order..." : `Order now from ${formatCurrency(totalPrice)} `}
+          <Button type="primary" disabled={isSubmitting || isLoadingAddress}>
+            {isSubmitting
+              ? "Placing Order..."
+              : `Order now from ${formatCurrency(totalPrice)} `}
           </Button>
         </div>
       </Form>
@@ -119,15 +159,15 @@ export async function action({ request }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
 
-  console.log(data)
+  console.log(data);
 
   const order = {
     ...data,
     cart: JSON.parse(data.cart),
     priority: data.priority === "true",
   };
-  
-  console.log(order)
+
+  console.log(order);
   const errors = {};
   if (!isValidPhone(order.phone))
     errors.phone = "Please provide a valid Number";
@@ -136,7 +176,7 @@ export async function action({ request }) {
 
   const newOrder = await createOrder(order);
   //do not over use store directly inside componenent
-  store.dispatch(clearCart())
+  store.dispatch(clearCart());
   return redirect(`/order/${newOrder.id}`);
 }
 
