@@ -9,11 +9,19 @@ const Main = styled.main`
   padding: 4rem 4.8rem 6.4rem;
 `;
 const StyledAppLayout = styled.div`
-    display: grid;
-    height: 100vh;
-    grid-template-columns: 26rem 1fr;
-    grid-template-rows: auto 1fr;
-`
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 26rem 1fr;
+  grid-template-rows: auto 1fr;
+`;
+
+const Container = styled.div`
+  max-width: 120rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+`;
 
 const AppLayout = () => {
   return (
@@ -21,7 +29,9 @@ const AppLayout = () => {
       <Header />
       <Sidebar />
       <Main>
-        <Outlet />
+        <Container>
+          <Outlet />
+        </Container>
       </Main>
     </StyledAppLayout>
   );
